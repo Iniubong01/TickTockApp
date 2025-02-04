@@ -7,8 +7,9 @@ public class TT_TweenManager : MonoBehaviour
 {
 
     [Header("GameObject UI to be slided in")]
-    [SerializeField] private RectTransform mainMenu, addPlayerUI, selectThemeUI, instructionUI,
-                                            gameSettingsUI, gamePlayUI, countdownUI, gameOverUI;
+    [SerializeField] private RectTransform mainMenu, addPlayerUI, SecAddPlayerUI, selectThemeUI, instructionUI,
+                                            gameSettingsUI, gamePlayUI, countdownUI, gameOverUI, teamUI,
+                                            RushTheme;
 
     [SerializeField] private CanvasGroup gameSettingsCanvasGroup, countdownCanvasGroup; // Reference the CanvasGroup
 
@@ -119,6 +120,7 @@ public class TT_TweenManager : MonoBehaviour
         });
 
         canTap = true;
+
         gamePlayUI.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
     }
 
@@ -315,4 +317,42 @@ public class TT_TweenManager : MonoBehaviour
                 gameSettingsCanvasGroup.blocksRaycasts = false;
         });
     }
+
+
+    /// Start of Team Rush
+    //////////////////////////////////////////////////////////////////////////////
+    ///
+
+    public void MenuInSecAddPlayerOut()
+    {
+        SecAddPlayerUI.DOAnchorPos(offScreenPos, 0.25f);
+        mainMenu.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
+    }
+
+        public void AddPlayerOutTeamIn()
+    {
+        SecAddPlayerUI.DOAnchorPos(offScreenPos, 0.25f);
+        teamUI.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
+    }
+
+        public void TeamOutAddPlayerIn()
+    {
+        teamUI.DOAnchorPos(offScreenPos, 0.25f);
+        SecAddPlayerUI.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
+    }
+
+        public void TeamOutRushThemeIn()
+    {
+        teamUI.DOAnchorPos(offScreenPos, 0.25f);
+        RushTheme.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
+    }
+
+        public void RushThemeCountDownIn()
+    {
+        teamUI.DOAnchorPos(offScreenPos, 0.25f);
+        countdownUI.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
+    }
+
+
+
 }

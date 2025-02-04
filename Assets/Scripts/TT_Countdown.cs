@@ -80,6 +80,7 @@ public class TT_Countdown : MonoBehaviour
         StartCoroutine(FadeOutAudio(1f)); // Gradual fade-out
         
         tweenManager.countdownUIOutgamePlayUIIn();
+        gamePlay.ChangeBackgroundAndQuestion();
     }
 
     private IEnumerator FadeOutAudio(float fadeDuration)

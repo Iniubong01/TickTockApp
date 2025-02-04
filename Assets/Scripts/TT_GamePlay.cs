@@ -15,6 +15,7 @@ public class TT_GamePlay : MonoBehaviour
     [SerializeField] private GameObject[] backgrounds;
 
     [SerializeField] private ParticleSystem boom;
+    [SerializeField] private GameObject gameoverBackground;
 
     [SerializeField] private GameObject background;
 
@@ -51,6 +52,12 @@ public class TT_GamePlay : MonoBehaviour
     [HideInInspector] public int timePlayed;
 
     [HideInInspector] public bool isGameOver, isTicking;
+    [HideInInspector]  public bool isRush = false;
+    private bool isSexy = false;
+    private bool isCrazy = false;
+    private bool isFlirty = false;
+    private bool isEdgy = false;
+
 
 
     void Start()
@@ -231,7 +238,72 @@ public class TT_GamePlay : MonoBehaviour
             tickingCoroutine = null;
         }
     }
-    
+
+        public void Normal()
+    {
+        isRush = false;
+        isSexy = false;
+        isCrazy = false;
+        isFlirty = false;
+        isEdgy = false;
+    }
+
+    public void Rush()
+    {
+        isRush = true;
+        isSexy = false;
+        isCrazy = false;
+        isFlirty = false;
+        isEdgy = false;
+    }
+
+        public void Sexy()
+    {
+        isRush = false;
+        isSexy = true;
+        isCrazy = false;
+        isFlirty = false;
+        isEdgy = false;
+    }
+
+        public void Crazy()
+    {
+        isRush = false;
+        isSexy = false;
+        isCrazy = true;
+        isFlirty = false;
+        isEdgy = false;
+    }
+
+        public void Flirty()
+    {
+        isRush = false;
+        isSexy = false;
+        isCrazy = false;
+        isFlirty = true;
+        isEdgy = false;
+    }
+
+        public void Edgy()
+    {
+        isRush = false;
+        isSexy = false;
+        isCrazy = false;
+        isFlirty = false;
+        isEdgy = true;
+    }
+
+    public void Reset()
+    {
+        questionText.text = "";
+        
+        if(isRush || isCrazy || isSexy || isEdgy || isFlirty)
+        {
+                    nameThreeGameObject.SetActive(false);
+                    mostLikelyGameObject.SetActive(false);
+        }
+    }
+
     public void setGameplayLenght()
     {
         countdownTimer = Random.Range(minValue, maxValue);
@@ -254,6 +326,7 @@ public class TT_GamePlay : MonoBehaviour
     public void GameOver()
     {
         PlayBoomSound();
+        StartCoroutine(showBackground());
         boom.Play();
         isGameOver= true;
         tweenManager.canTap = false;
@@ -261,6 +334,13 @@ public class TT_GamePlay : MonoBehaviour
         Debug.Log("Game Over!");  
 
         countdown.ResumeMusic();      
+    }
+
+    public IEnumerator showBackground()
+    {
+        gameoverBackground.SetActive(true);
+        yield return new WaitForSeconds(1);
+        gameoverBackground.SetActive(false);
     }
 
     public void Restart()
@@ -332,21 +412,77 @@ public class TT_GamePlay : MonoBehaviour
 
     public void selectStyle()
     {
-        // Both toggles are on
-        if (nameThreeThingsToggle.isOn && mostLikelyToggle.isOn)
+        if (isRush  == true)
         {
-            if (Random.Range(0, 2) == 0) // 50% chance
+            DisplayQuestions(questionManager.GetRushCount(), questionManager.GetRushQuestion);
+                    nameThreeGameObject.SetActive(false);
+                    mostLikelyGameObject.SetActive(false);
+        }
+
+        else if (isSexy)
+        {
+            DisplayQuestions(questionManager.GetSexyCount(), questionManager.GetSexyQuestion);
+                    nameThreeGameObject.SetActive(false);
+                    mostLikelyGameObject.SetActive(false);
+        }
+
+        else if(isCrazy)
+        {
+            DisplayQuestions(questionManager.GetCrazyCount(), questionManager.GetCrazyQuestion);
+                    nameThreeGameObject.SetActive(false);
+                    mostLikelyGameObject.SetActive(false);
+        }
+
+        else if (isFlirty)
+        {
+            DisplayQuestions(questionManager.GetFlirtyCount(), questionManager.GetFlirtyQuestion);
+                    nameThreeGameObject.SetActive(false);
+                    mostLikelyGameObject.SetActive(false);
+        }
+
+        else if(isEdgy)
+        {
+            DisplayQuestions(questionManager.GetEdgyCount(), questionManager.GetEdgyQuestion);
+                    nameThreeGameObject.SetActive(false);
+                    mostLikelyGameObject.SetActive(false);
+        }
+
+        else
+        {
+            // Both toggles are on
+            if (nameThreeThingsToggle.isOn && mostLikelyToggle.isOn)
             {
-                // Randomly choose a question from "Name Three Things"
+                if (Random.Range(0, 2) == 0) // 50% chance
+                {
+                    // Randomly choose a question from "Name Three Things"
+                    DisplayRandomQuestion(questionManager.GetNameThreeThingsQuestionCount(), questionManager.GetNameThreeThingsQuestion);
+
+                    // Activate Name Three Things GameObject
+                    nameThreeGameObject.SetActive(true);
+                    mostLikelyGameObject.SetActive(false);
+                }
+                else
+                {
+                    // Randomly choose a question from "Most Likely"
+                    DisplayRandomQuestion(questionManager.GetQuestionCount(), questionManager.GetMostLikelyQuestion);
+
+                    // Activate Most Likely GameObject
+                    mostLikelyGameObject.SetActive(true);
+                    nameThreeGameObject.SetActive(false);
+                }
+            }
+            else if (nameThreeThingsToggle.isOn)
+            {
+                // Select "Name Three Things" style
                 DisplayRandomQuestion(questionManager.GetNameThreeThingsQuestionCount(), questionManager.GetNameThreeThingsQuestion);
 
                 // Activate Name Three Things GameObject
                 nameThreeGameObject.SetActive(true);
                 mostLikelyGameObject.SetActive(false);
             }
-            else
+            else if (mostLikelyToggle.isOn)
             {
-                // Randomly choose a question from "Most Likely"
+                // Select "Most Likely" style
                 DisplayRandomQuestion(questionManager.GetQuestionCount(), questionManager.GetMostLikelyQuestion);
 
                 // Activate Most Likely GameObject
@@ -354,24 +490,7 @@ public class TT_GamePlay : MonoBehaviour
                 nameThreeGameObject.SetActive(false);
             }
         }
-        else if (nameThreeThingsToggle.isOn)
-        {
-            // Select "Name Three Things" style
-            DisplayRandomQuestion(questionManager.GetNameThreeThingsQuestionCount(), questionManager.GetNameThreeThingsQuestion);
-
-            // Activate Name Three Things GameObject
-            nameThreeGameObject.SetActive(true);
-            mostLikelyGameObject.SetActive(false);
-        }
-        else if (mostLikelyToggle.isOn)
-        {
-            // Select "Most Likely" style
-            DisplayRandomQuestion(questionManager.GetQuestionCount(), questionManager.GetMostLikelyQuestion);
-
-            // Activate Most Likely GameObject
-            mostLikelyGameObject.SetActive(true);
-            nameThreeGameObject.SetActive(false);
-        }
+        
     }
 
     public void showPunishment()
@@ -388,6 +507,19 @@ public class TT_GamePlay : MonoBehaviour
     }
 
     private void DisplayRandomQuestion(int count, System.Func<int, string> getQuestion)
+    {
+        if (count > 0)
+        {
+            int randomIndex = Random.Range(0, count);
+            questionText.text = getQuestion(randomIndex);
+        }
+        else
+        {
+            questionText.text = "No questions available.";
+        }
+    }
+
+        private void DisplayQuestions(int count, System.Func<int, string> getQuestion)
     {
         if (count > 0)
         {

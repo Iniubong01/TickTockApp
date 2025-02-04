@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class TT_Tap : MonoBehaviour
+public class TT_RushTapUI : MonoBehaviour
 {
     private TT_GamePlay gamePlay;
     private TT_TweenManager tweenManager;
@@ -21,7 +21,7 @@ public class TT_Tap : MonoBehaviour
     void Update()
     {
         // Detect a tap or click
-        if (Input.GetMouseButtonDown(0)  && tweenManager.canTap == true && !gamePlay.isRush)
+        if (Input.GetMouseButtonDown(0)  && tweenManager.canTap == true && gamePlay.isRush)
         gamePlay.ChangeBackgroundAndQuestion();
         return;        
     }
@@ -32,3 +32,5 @@ public class TT_Tap : MonoBehaviour
         return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
     }
 }
+
+
