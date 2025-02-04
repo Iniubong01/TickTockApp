@@ -32,6 +32,8 @@ public class TT_GamePlay : MonoBehaviour
     private TT_GameOver gameOver;
     private TT_Countdown countdown;
 
+    public int gemNumber;
+
     
     private Coroutine tickingCoroutine;
 
@@ -291,6 +293,13 @@ public class TT_GamePlay : MonoBehaviour
         isCrazy = false;
         isFlirty = false;
         isEdgy = true;
+        AddGem(4);
+    }
+
+    //Method to add gem from any method within our outside the class
+    public void AddGem(int gemAdded)
+    {
+        gemNumber += gemAdded;
     }
 
     public void Reset()
@@ -410,8 +419,10 @@ public class TT_GamePlay : MonoBehaviour
         }
     }
 
+
     public void selectStyle()
     {
+        // You will not add any gem condition here
         if (isRush  == true)
         {
             DisplayQuestions(questionManager.GetRushCount(), questionManager.GetRushQuestion);
@@ -419,13 +430,15 @@ public class TT_GamePlay : MonoBehaviour
                     mostLikelyGameObject.SetActive(false);
         }
 
-        else if (isSexy)
+        // Add the gem condition together here in each if statement using the AND (&&) symbol
+        else if (isSexy) // && gemNumber == 30 (Depending on the number required, it will be on the UI))
         {
             DisplayQuestions(questionManager.GetSexyCount(), questionManager.GetSexyQuestion);
                     nameThreeGameObject.SetActive(false);
                     mostLikelyGameObject.SetActive(false);
         }
 
+        // Add the gem condition together here in each if statement using the AND (&&) symbol
         else if(isCrazy)
         {
             DisplayQuestions(questionManager.GetCrazyCount(), questionManager.GetCrazyQuestion);
@@ -433,6 +446,7 @@ public class TT_GamePlay : MonoBehaviour
                     mostLikelyGameObject.SetActive(false);
         }
 
+        // Add the gem condition together here in each if statement using the AND (&&) symbol
         else if (isFlirty)
         {
             DisplayQuestions(questionManager.GetFlirtyCount(), questionManager.GetFlirtyQuestion);
@@ -440,6 +454,7 @@ public class TT_GamePlay : MonoBehaviour
                     mostLikelyGameObject.SetActive(false);
         }
 
+        // Add the gem condition together here in each if statement using the AND (&&) symbol
         else if(isEdgy)
         {
             DisplayQuestions(questionManager.GetEdgyCount(), questionManager.GetEdgyQuestion);
@@ -447,6 +462,7 @@ public class TT_GamePlay : MonoBehaviour
                     mostLikelyGameObject.SetActive(false);
         }
 
+        // You will not add any gem condition here
         else
         {
             // Both toggles are on
