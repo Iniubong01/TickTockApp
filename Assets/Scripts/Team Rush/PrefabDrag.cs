@@ -57,6 +57,6 @@ public class PrefabDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
 
-        rush.CheckTeamBalance(); // Call balance check
+     //   rush.DistributePlayers(allplayer); // Call balance check
     }
 }

@@ -15,7 +15,6 @@ public class TT_GamePlay : MonoBehaviour
     [SerializeField] private GameObject[] backgrounds;
 
     [SerializeField] private ParticleSystem boom;
-    [SerializeField] private GameObject gameoverBackground;
 
     [SerializeField] private GameObject background;
 
@@ -31,8 +30,6 @@ public class TT_GamePlay : MonoBehaviour
     private TT_TweenManager tweenManager;
     private TT_GameOver gameOver;
     private TT_Countdown countdown;
-
-    public int gemNumber;
 
     
     private Coroutine tickingCoroutine;
@@ -54,17 +51,23 @@ public class TT_GamePlay : MonoBehaviour
     [HideInInspector] public int timePlayed;
 
     [HideInInspector] public bool isGameOver, isTicking;
-    [HideInInspector]  public bool isRush = false;
-    private bool isSexy = false;
-    private bool isCrazy = false;
-    private bool isFlirty = false;
-    private bool isEdgy = false;
-
+    [HideInInspector] public bool isRush = false;
+    [HideInInspector] public bool isNormal = false;
+    [HideInInspector] public bool isSexy = false;
+    [HideInInspector] public bool isCrazy = false;
+    [HideInInspector] public bool isFlirty = false;
+    [HideInInspector] public bool isEdgy = false;
+    private TT_RushTapUI rushTap;
 
 
     void Start()
     {
+        isNormal = true;
+        background.SetActive(false);
+
         GameObject qmObject = GameObject.Find("Question Manager");
+        rushTap =  GameObject.Find("Rush Game UI").GetComponent<TT_RushTapUI>();;
+
         if (qmObject == null)
         {
             Debug.LogError("Question Manager GameObject not found!");
@@ -141,6 +144,7 @@ public class TT_GamePlay : MonoBehaviour
 
         if (tweenManager.canTap)
         {
+            background.SetActive(true);
             // Start ticking when canTap is true and ensure only one coroutine runs
             if (tickingCoroutine == null)
                 tickingCoroutine = StartCoroutine(Ticking());
@@ -159,6 +163,7 @@ public class TT_GamePlay : MonoBehaviour
             // Stop ticking when canTap is false
             StopCoroutine(tickingCoroutine);
             tickingCoroutine = null;
+            background.SetActive(false);
         }
 
         if (gameOver)
@@ -173,7 +178,10 @@ public class TT_GamePlay : MonoBehaviour
         float waitTime = 1.2f; // Initial tick interval
 
         // Get the CanvasGroup component for transparency control
-        CanvasGroup canvasGroup = background.GetComponent<CanvasGroup>(); // Replace with your GameObject
+
+        background.SetActive(true);
+
+        CanvasGroup canvasGroup = background.GetComponent<CanvasGroup>(); // 
         if (canvasGroup == null)
         {
             canvasGroup = background.AddComponent<CanvasGroup>(); // Add CanvasGroup if it doesn't exist
@@ -241,15 +249,6 @@ public class TT_GamePlay : MonoBehaviour
         }
     }
 
-        public void Normal()
-    {
-        isRush = false;
-        isSexy = false;
-        isCrazy = false;
-        isFlirty = false;
-        isEdgy = false;
-    }
-
     public void Rush()
     {
         isRush = true;
@@ -259,6 +258,23 @@ public class TT_GamePlay : MonoBehaviour
         isEdgy = false;
     }
 
+    private void hideGameObjects()
+    {
+        nameThreeGameObject.SetActive(false);
+        mostLikelyGameObject.SetActive(false);
+    }
+
+    public void Normal()
+    {
+        isNormal = true;
+        isRush = false;
+        isSexy = false;
+        isCrazy = false;
+        isFlirty = false;
+        isEdgy = false;
+        selectStyle();
+    }
+
         public void Sexy()
     {
         isRush = false;
@@ -266,6 +282,8 @@ public class TT_GamePlay : MonoBehaviour
         isCrazy = false;
         isFlirty = false;
         isEdgy = false;
+        hideGameObjects();
+        selectStyle();
     }
 
         public void Crazy()
@@ -275,6 +293,8 @@ public class TT_GamePlay : MonoBehaviour
         isCrazy = true;
         isFlirty = false;
         isEdgy = false;
+        hideGameObjects();
+        selectStyle();
     }
 
         public void Flirty()
@@ -284,6 +304,8 @@ public class TT_GamePlay : MonoBehaviour
         isCrazy = false;
         isFlirty = true;
         isEdgy = false;
+        hideGameObjects();
+        selectStyle();
     }
 
         public void Edgy()
@@ -293,24 +315,8 @@ public class TT_GamePlay : MonoBehaviour
         isCrazy = false;
         isFlirty = false;
         isEdgy = true;
-        AddGem(4);
-    }
-
-    //Method to add gem from any method within our outside the class
-    public void AddGem(int gemAdded)
-    {
-        gemNumber += gemAdded;
-    }
-
-    public void Reset()
-    {
-        questionText.text = "";
-        
-        if(isRush || isCrazy || isSexy || isEdgy || isFlirty)
-        {
-                    nameThreeGameObject.SetActive(false);
-                    mostLikelyGameObject.SetActive(false);
-        }
+        hideGameObjects();
+        selectStyle();
     }
 
     public void setGameplayLenght()
@@ -335,31 +341,26 @@ public class TT_GamePlay : MonoBehaviour
     public void GameOver()
     {
         PlayBoomSound();
-        StartCoroutine(showBackground());
         boom.Play();
         isGameOver= true;
         tweenManager.canTap = false;
         tweenManager.GameOverInGamePlayUIOut();
         Debug.Log("Game Over!");  
 
-        countdown.ResumeMusic();      
-    }
-
-    public IEnumerator showBackground()
-    {
-        gameoverBackground.SetActive(true);
-        yield return new WaitForSeconds(1);
-        gameoverBackground.SetActive(false);
+        countdown.ResumeMusic();    
     }
 
     public void Restart()
     {
         isGameOver= false;
         StartCoroutine(canTap());
-        tweenManager.GameOverOutCountdownIn();
+
         Debug.Log("Restart");
         setGameplayLenght();
         countdown.ResetTimer();
+
+        tweenManager.GameOverOutCountdownIn();
+        rushTap.RushRestartGame();
     }
 
     IEnumerator canTap()
@@ -379,6 +380,7 @@ public class TT_GamePlay : MonoBehaviour
         selectStyle();
     }
 
+
     public void PlayTickSound()
     {
         audioSource.PlayOneShot(tickSound);
@@ -389,7 +391,7 @@ public class TT_GamePlay : MonoBehaviour
         audioSource.PlayOneShot(boomSound);
     }
 
-    private void UpdateBackground()
+    public void UpdateBackground()
     {
         // Deactivate all backgrounds
         foreach (var background in backgrounds)
@@ -419,51 +421,38 @@ public class TT_GamePlay : MonoBehaviour
         }
     }
 
-
     public void selectStyle()
     {
-        // You will not add any gem condition here
         if (isRush  == true)
         {
-            DisplayQuestions(questionManager.GetRushCount(), questionManager.GetRushQuestion);
-                    nameThreeGameObject.SetActive(false);
-                    mostLikelyGameObject.SetActive(false);
+           Debug.Log("Playing rush mode!");
         }
 
-        // Add the gem condition together here in each if statement using the AND (&&) symbol
-        else if (isSexy) // && gemNumber == 30 (Depending on the number required, it will be on the UI))
+        else if (isSexy)
         {
             DisplayQuestions(questionManager.GetSexyCount(), questionManager.GetSexyQuestion);
-                    nameThreeGameObject.SetActive(false);
-                    mostLikelyGameObject.SetActive(false);
+            hideGameObjects();
         }
 
-        // Add the gem condition together here in each if statement using the AND (&&) symbol
         else if(isCrazy)
         {
             DisplayQuestions(questionManager.GetCrazyCount(), questionManager.GetCrazyQuestion);
-                    nameThreeGameObject.SetActive(false);
-                    mostLikelyGameObject.SetActive(false);
+            hideGameObjects();
         }
 
-        // Add the gem condition together here in each if statement using the AND (&&) symbol
         else if (isFlirty)
         {
             DisplayQuestions(questionManager.GetFlirtyCount(), questionManager.GetFlirtyQuestion);
-                    nameThreeGameObject.SetActive(false);
-                    mostLikelyGameObject.SetActive(false);
+            hideGameObjects();
         }
 
-        // Add the gem condition together here in each if statement using the AND (&&) symbol
         else if(isEdgy)
         {
             DisplayQuestions(questionManager.GetEdgyCount(), questionManager.GetEdgyQuestion);
-                    nameThreeGameObject.SetActive(false);
-                    mostLikelyGameObject.SetActive(false);
+            hideGameObjects();
         }
 
-        // You will not add any gem condition here
-        else
+        else if(isNormal)
         {
             // Both toggles are on
             if (nameThreeThingsToggle.isOn && mostLikelyToggle.isOn)

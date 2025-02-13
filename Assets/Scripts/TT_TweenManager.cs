@@ -9,7 +9,7 @@ public class TT_TweenManager : MonoBehaviour
     [Header("GameObject UI to be slided in")]
     [SerializeField] private RectTransform mainMenu, addPlayerUI, SecAddPlayerUI, selectThemeUI, instructionUI,
                                             gameSettingsUI, gamePlayUI, countdownUI, gameOverUI, teamUI,
-                                            RushTheme;
+                                            rushAddPlayerUI, rushGamePlayUI, rushInstruction, RushTheme;
 
     [SerializeField] private CanvasGroup gameSettingsCanvasGroup, countdownCanvasGroup; // Reference the CanvasGroup
 
@@ -44,6 +44,7 @@ public class TT_TweenManager : MonoBehaviour
         countdown = GameObject.Find("Count Down UI").GetComponent<TT_Countdown>();
         addPlayer = GameObject.Find("Add Player UI").GetComponent<TT_AddPlayerScript>();
         gamePlay =  GameObject.Find("Game Settings").GetComponent<TT_GamePlay>();
+        canTap = false;
     }
 
     // Update is called once per frame
@@ -64,7 +65,7 @@ public class TT_TweenManager : MonoBehaviour
         });
             
 
-        if(doNotShow == true)
+        if(doNotShow == true && !gamePlay.isRush)
         {
             countdownCanvasGroup.DOFade(1f, 0.15f).SetEase(Ease.OutQuad).OnComplete(() =>
             {
@@ -121,7 +122,16 @@ public class TT_TweenManager : MonoBehaviour
 
         canTap = true;
 
-        gamePlayUI.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
+
+         if (gamePlay.isRush)
+        {
+            rushGamePlayUI.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
+        }
+        else 
+        {
+            gamePlayUI.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
+        }
+
     }
 
     // Slide out main menu and bring in record UI
@@ -140,11 +150,26 @@ public class TT_TweenManager : MonoBehaviour
         canTap = false;
     }
 
+        public void RushGamePlayUIOutRushAddPlayerIn()
+    {
+        rushGamePlayUI.DOAnchorPos(offScreenPos, 0.25f);
+        rushAddPlayerUI.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
+        countdown.HideInstructionTexts();
+        countdown.ResetTime();
+        canTap = false;
+    }
+
     //////////////////////////////////////////////////////////////////
     // Slide out addPlayerUI and bring back MainMenu
     public void MenuInaddPlayerOut()
     {
         addPlayerUI.DOAnchorPos(offScreenPos, 0.25f);
+        mainMenu.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
+    }
+
+        public void MenuInrushAddPlayerOut()
+    {
+        rushAddPlayerUI.DOAnchorPos(offScreenPos, 0.25f);
         mainMenu.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
     }
 
@@ -160,7 +185,16 @@ public class TT_TweenManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.30f);
         gameOverUI.DOScale(Vector2.one, 0.5f).SetEase(Ease.OutBack);
-        gamePlayUI.DOAnchorPos(offScreenPos, 0.5f);
+        
+        if (gamePlay.isRush)
+        {
+            rushGamePlayUI.DOAnchorPos(offScreenPos, 0.5f);
+        }
+        else
+        {
+            gamePlayUI.DOAnchorPos(offScreenPos, 0.5f);
+        }
+
     }
 
      public void GameOverOutCountdownIn()
@@ -180,10 +214,21 @@ public class TT_TweenManager : MonoBehaviour
     {
         countdown.ResetTimer();
         gamePlay.isGameOver = false;
-        gamePlayUI.DOAnchorPos(offScreenPos, 0.25f);
         canTap = false;
+
+        if (gamePlay.isRush)
+        {
+            rushGamePlayUI.DOAnchorPos(offScreenPos, 0.25f);
+            rushAddPlayerUI.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
+        }
+        else
+        {
+            gamePlayUI.DOAnchorPos(offScreenPos, 0.25f);
+            addPlayerUI.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
+        }
+
         
-        addPlayerUI.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
+
     }
 
         public void GameOverUIOutAddPlayerIn()
@@ -193,7 +238,16 @@ public class TT_TweenManager : MonoBehaviour
         canTap = false;
         
         gameOverUI.DOScale(Vector2.zero, 0.25f).SetEase(Ease.InBack);
-        addPlayerUI.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
+
+
+        if (gamePlay.isRush)
+        {
+            rushAddPlayerUI.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
+        }
+        else
+        {
+            addPlayerUI.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
+        }
     }
     
 
@@ -319,7 +373,7 @@ public class TT_TweenManager : MonoBehaviour
     }
 
 
-    /// Start of Team Rush
+    /// Team Rush
     //////////////////////////////////////////////////////////////////////////////
     ///
 
@@ -347,10 +401,60 @@ public class TT_TweenManager : MonoBehaviour
         RushTheme.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
     }
 
-        public void RushThemeCountDownIn()
+        public void RushTeamCountDownIn()
     {
         teamUI.DOAnchorPos(offScreenPos, 0.25f);
         countdownUI.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
+    }
+
+        public void RushInstructionRushTeamIn()
+    {
+        rushInstruction.DOAnchorPos(offScreenPos, 0.25f);
+        teamUI.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
+    }
+
+    public void MenuOutRushAddPlayerIn()
+    {
+        mainMenu.DOAnchorPos(offScreenPos, 0.25f);
+        rushAddPlayerUI.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
+    }
+
+        public void TeamUIOutInstructionUIIn()
+    {
+
+        teamUI.DOAnchorPos(offScreenPos, 0.25f);
+
+            if(doNotShow == true && gamePlay.isRush)
+        {
+            countdownCanvasGroup.DOFade(1f, 0.15f).SetEase(Ease.OutQuad).OnComplete(() =>
+            {
+                countdownCanvasGroup.interactable = true;
+                countdownCanvasGroup.blocksRaycasts = true;
+            });
+            
+            countdown.StartCounting();
+            countdown.ShowInstructionTexts();
+
+        } else
+
+        {
+            rushInstruction.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
+        }
+
+    }
+
+         public void RushInstructionUIOutCountDownUIIn()
+    {
+        rushInstruction.DOAnchorPos(offScreenPos, 0.25f);
+
+        countdownCanvasGroup.DOFade(1f, 0.15f).SetEase(Ease.OutQuad).OnComplete(() =>
+        {
+            countdownCanvasGroup.interactable = true;
+            countdownCanvasGroup.blocksRaycasts = true;
+        });
+
+        countdown.StartCounting();
+        countdown.ShowInstructionTexts();
     }
 
 

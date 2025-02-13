@@ -15,9 +15,9 @@ public class TT_Rotate : MonoBehaviour
 
     void RotateButton()
     {
-        currentRotation += 90f; // Increment by 90 degrees
+        currentRotation += 360f; // Increment by 90 degrees
 
-        transform.DORotate(new Vector3(0, 0, currentRotation), 0.3f, RotateMode.Fast)
+        transform.DORotate(new Vector3(0, 0, currentRotation), 0.4f, RotateMode.Fast)
             .SetEase(Ease.InOutSine); // Smooth transition
     }
 }

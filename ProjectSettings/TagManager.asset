@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - TeamHolder
+  - Child Holders
   layers:
   - Default
   - TransparentFX

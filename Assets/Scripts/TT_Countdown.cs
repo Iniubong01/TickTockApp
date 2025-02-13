@@ -78,9 +78,9 @@ public class TT_Countdown : MonoBehaviour
         countdownText.text = "1";
         Debug.Log("Countdown Complete!");
         StartCoroutine(FadeOutAudio(1f)); // Gradual fade-out
+        gamePlay.setGameplayLenght();
         
         tweenManager.countdownUIOutgamePlayUIIn();
-        gamePlay.ChangeBackgroundAndQuestion();
     }
 
     private IEnumerator FadeOutAudio(float fadeDuration)

@@ -3,10 +3,71 @@ using UnityEngine;
 
 public class TT_QuestionManager : MonoBehaviour
 {
+
+    private List<string> Rush;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+                Rush = new List<string>
+    {
+            "Elephant", "Dog", "Cat", "Horse", "Lion", "Tiger", "Shark", "Eagle", "Dolphin", "Monkey",
+            "Cow", "Goat", "Sheep", "Zebra", "Kangaroo", "Giraffe", "Bear", "Crocodile", "Snake", "Turtle",
+            "Chair", "Table", "Book", "Pen", "Spoon", "Fork", "Plate", "Mug", "Bottle", "Clock",
+            "Television", "Radio", "Laptop", "Keyboard", "Mouse", "Pillow", "Blanket", "Towel", "Mirror",
+            "Car", "Bicycle", "Bus", "Kitchen", "Airplane", "Helicopter", "Yacht", "Submarine",
+            "House", "Bridge", "Skyscraper", "Lighthouse", "Castle", "Tent", "Barn", "Hut", "Igloo",
+            "Rock", "Mountain", "Tree", "River", "Ocean", "Waterfall", "Desert", "Cloud", "Volcano", "Iceberg",
+            "Shirt", "Pants", "Hat", "Jacket", "Shoes", "Socks", "Gloves", "Sunglasses", "Belt", "Scarf",
+            "Apple", "Banana", "Orange", "Bread", "Cheese", "Meat", "Fish", "Rice", "Cake", "Chocolate",
+            "Football", "Basketball", "Tennis Racket", "Baseball Bat", "Boxing Gloves", "Skates", "Surfboard", "Helmet", "Dumbbell",
+            "Dog", "Cat", "Cow", "Horse", "Goat", "Sheep", "Duck", "Frog", "Eagle", "Bear",  
+            "Deer", "Rabbit", "Turtle", "Fish", "Shark", "Whale", "Dolphin", "Parrot", "Snake", "Lizard",  
+            "Chicken", "Owl", "Fox", "Wolf", "Tiger", "Lion", "Zebra", "Giraffe", "Elephant", "Hippo",
+            "Chair", "Table", "Bed", "Lamp", "Door", "Window", "Fan", "Mirror", "Couch", "Clock",  
+            "Phone", "Laptop", "Keyboard", "Mouse", "Pencil", "Pen", "Book", "Notebook", "Backpack", "Shoes",  
+            "Hat", "Glasses", "Bottle", "Cup", "Plate", "Spoon", "Fork", "Bowl", "Scissors", "Rope",
+            "Rock", "Tree", "Flower", "Grass", "Leaf", "Cloud", "Sun", "Moon", "Star", "Rain",  
+            "Snow", "Wind", "River", "Ocean", "Lake", "Mountain", "Hill", "Valley", "Island", "Desert",  
+            "Cave", "Waterfall", "Beach", "Sand", "Ice", "Fire", "Stone", "Bush", "Moss", "Pond",
+            "Apple", "Banana", "Orange", "Grapes", "Peach", "Pear", "Cherry", "Strawberry", "Watermelon", "Tomato",  
+            "Potato", "Carrot", "Onion", "Garlic", "Corn", "Rice", "Bread", "Butter", "Cheese", "Egg",  
+            "Milk", "Honey", "Pizza", "Burger", "Cake", "Dining", "Candy", "Chocolate", "Fish", "Chicken",
+            "House", "Barn", "Bridge", "School", "Church", "Store", "Tower", "Castle", "Factory", "Hotel",  
+            "Hospital", "Library", "Market", "Farm", "Garage", "Tent", "Cabin", "Stadium", "Palace", "Airport",
+            "Car", "Bus", "Truck", "Bike", "Train", "Boat", "Ship", "Plane", "Taxi", "Ambulance",  
+            "Firetruck", "Helicopter", "Motorcycle", "Scooter", "Tractor", "Submarine", "Jet", "Yacht", "Balloon", "Cart",
+            "Shirt", "Pants", "Shorts", "Skirt", "Dress", "Jacket", "Socks", "Gloves", "Scarf", "Belt",  
+            "Tie", "Earring", "Necklace", "Watch", "Bracelet", "Helmet", "Spider", "Maize", "Slippers", "Boots",
+            "Hammer", "Saw", "Nail", "Drill", "Wrench", "Plier", "Screw", "Tape", "Ruler", "Brush",  
+            "Eraser", "Marker", "Compass", "Scalpel", "Tongs", "Ladder", "Flashlight", "Lock", "Key", "Bucket",
+            "Ball", "Balloon", "Toy", "Doll", "Whale", "Kite", "Clock", "Radio", "TV", "Candle",  
+            "Soap", "Towel", "Blanket", "Sniper", "Basket", "Suitcase", "Map", "Flag", "Rope", "Mirror",
+            "Ant", "Bee", "Butterfly", "Crab", "Crocodile", "Dove", "Electric fish", "Goose", "Hedgehog", "Jellyfish",  
+            "Kangaroo", "Leopard", "Mole", "Newt", "Octopus", "Panda", "Penguin", "Quail", "Raccoon", "Seagull",  
+            "Slug", "Squirrel", "Toad", "Vulture", "Jollof Rice", "Yak", "Chameleon", "Pigeon", "Donkey", "Gorilla",
+            "Envelope", "Air", "Breeze", "Calculator", "Razor", "Toothbrush", "Shampoo", "Lotion", "Comb", "Lipstick",  
+            "Cork", "Battery", "Sponge", "Sewing Needle", "Dice", "Whistle", "Thermometer", "Medal", "Goggles", "Locket",  
+            "Keychain", "Handbag", "Duster", "Chalk", "Sunscreen", "Flyswatter", "Bulb", "Headphones", "Joystick", "USB Drive",
+            "Volcano", "Glacier", "Coral", "Pebble", "Cactus", "Superman", "Vine", "Breeze", "Fog", "Wonderwoman",  
+            "Lava", "Seashell", "Spiderman", "Butter", "Driftwood", "Tide", "Dew", "Icicle", "Cliff", "Meadow",
+            "Mango", "Pawpaw", "Plum", "Coconut", "Avocado", "Blueberry", "Cucumber", "Lettuce", "Spinach", "Peanut",  
+            "Fan", "Charger", "Facebook Logo", "Yogurt", "Hoodie", "Donut", "Pasta", "Pancake", "Cereal", "Steak",  
+            "Cinema", "Popcorn", "Pickle", "Jam", "Sushi", "Noodles", "Sword", "Lasagna", "Meatball", "Hotdog",
+            "Mosque", "Synagogue", "Fort", "Greenhouse", "Warehouse", "Lighthouse", "Crocs", "Prison", "Opera House", "Mall",  
+            "Bus Stop", "Train Station", "Cinema", "Aquarium", "Museum", "Gas Station", "Campsite", "Parking Lot", "Windmill", "Playground",
+            "Rickshaw", "Barge", "Canoe", "Raft", "Hovercraft", "Cruise Ship", "Glider", "Cable Car", "Bulldozer", "Forklift",  
+            "Ambulance", "Trolley", "Dirt Bike", "Skateboard", "Roller Skates", "Ant hill", "Snowmobile", "Rowboat", "Toilet", "Tank",
+            "Raincoat", "Swimsuit", "Overalls", "Cape", "Water", "Beret", "Turban", "Hoodie", "Wristband", "Ankle Boots",  
+            "Choose a word", "Hairband", "Lionel Messi", "Christiano Ronaldo", "Turtleneck", "Water ripples", "Sandal", "Stockings", "Ice cubes", "Bathrobe",
+            "Chandelier", "Barometer", "Telescope", "Stethoscope", "Microscope", "Magnifying Glass", "Crowbar", "Screwdriver", "Chainsaw", "Mallet",  
+            "Chisel", "Tongs", "Pickaxe", "Gun", "Spa", "Axe", "Clamp", "Windshield Wiper", "Wrench", "Drill Bit", "Paintbrush", "Measuring Tape",
+            "Ambulance", "Umbrella", "Keypad", "Compass", "Lantern", "Fireplace", "Silence", "Den", "Luggage", "Funnel",  
+            "Egg yolk", "Toaster", "Microwave", "Blender", "Vacuum Cleaner", "Sewing Machine", "Aquarium", "Boomerang", "Dumbbell", "TV Remote",
+            "Traffic Light", "Skater", "MP3 Player", "Penalty", "Railway", "Bitumen", "Headlight", "Pet Shop", "Wiazard", "Witch", "Sawdust", "Kerosene", "Fuel",
+            "Diesel", "Afghanistan", "Gas", "Myth", "Snorkel", "Emperor", "Beef", "Sound", "Instinct", "Chaos", "Taste", "Tray"
+    };
+
     }
 
     // Update is called once per frame
@@ -1216,63 +1277,13 @@ public class TT_QuestionManager : MonoBehaviour
         "What's the one thing you would sacrifice to make your dreams come true?"
     };
 
-        private List<string> Rush = new List<string>()
-    {
-            "Elephant", "Dog", "Cat", "Horse", "Lion", "Tiger", "Shark", "Eagle", "Dolphin", "Monkey",
-            "Cow", "Goat", "Sheep", "Zebra", "Kangaroo", "Giraffe", "Bear", "Crocodile", "Snake", "Turtle",
-            "Chair", "Table", "Book", "Pen", "Spoon", "Fork", "Plate", "Mug", "Bottle", "Clock",
-            "Television", "Radio", "Laptop", "Keyboard", "Mouse", "Pillow", "Blanket", "Towel", "Mirror",
-            "Car", "Bicycle", "Bus", "Kitchen", "Airplane", "Helicopter", "Yacht", "Submarine",
-            "House", "Bridge", "Skyscraper", "Lighthouse", "Castle", "Tent", "Barn", "Hut", "Igloo",
-            "Rock", "Mountain", "Tree", "River", "Ocean", "Waterfall", "Desert", "Cloud", "Volcano", "Iceberg",
-            "Shirt", "Pants", "Hat", "Jacket", "Shoes", "Socks", "Gloves", "Sunglasses", "Belt", "Scarf",
-            "Apple", "Banana", "Orange", "Bread", "Cheese", "Meat", "Fish", "Rice", "Cake", "Chocolate",
-            "Football", "Basketball", "Tennis Racket", "Baseball Bat", "Boxing Gloves", "Skates", "Surfboard", "Helmet", "Dumbbell",
-            "Dog", "Cat", "Cow", "Horse", "Goat", "Sheep", "Duck", "Frog", "Eagle", "Bear",  
-            "Deer", "Rabbit", "Turtle", "Fish", "Shark", "Whale", "Dolphin", "Parrot", "Snake", "Lizard",  
-            "Chicken", "Owl", "Fox", "Wolf", "Tiger", "Lion", "Zebra", "Giraffe", "Elephant", "Hippo",
-            "Chair", "Table", "Bed", "Lamp", "Door", "Window", "Fan", "Mirror", "Couch", "Clock",  
-            "Phone", "Laptop", "Keyboard", "Mouse", "Pencil", "Pen", "Book", "Notebook", "Backpack", "Shoes",  
-            "Hat", "Glasses", "Bottle", "Cup", "Plate", "Spoon", "Fork", "Bowl", "Scissors", "Rope",
-            "Rock", "Tree", "Flower", "Grass", "Leaf", "Cloud", "Sun", "Moon", "Star", "Rain",  
-            "Snow", "Wind", "River", "Ocean", "Lake", "Mountain", "Hill", "Valley", "Island", "Desert",  
-            "Cave", "Waterfall", "Beach", "Sand", "Ice", "Fire", "Stone", "Bush", "Moss", "Pond",
-            "Apple", "Banana", "Orange", "Grapes", "Peach", "Pear", "Cherry", "Strawberry", "Watermelon", "Tomato",  
-            "Potato", "Carrot", "Onion", "Garlic", "Corn", "Rice", "Bread", "Butter", "Cheese", "Egg",  
-            "Milk", "Honey", "Pizza", "Burger", "Cake", "Dining", "Candy", "Chocolate", "Fish", "Chicken",
-            "House", "Barn", "Bridge", "School", "Church", "Store", "Tower", "Castle", "Factory", "Hotel",  
-            "Hospital", "Library", "Market", "Farm", "Garage", "Tent", "Cabin", "Stadium", "Palace", "Airport",
-            "Car", "Bus", "Truck", "Bike", "Train", "Boat", "Ship", "Plane", "Taxi", "Ambulance",  
-            "Firetruck", "Helicopter", "Motorcycle", "Scooter", "Tractor", "Submarine", "Jet", "Yacht", "Balloon", "Cart",
-            "Shirt", "Pants", "Shorts", "Skirt", "Dress", "Jacket", "Socks", "Gloves", "Scarf", "Belt",  
-            "Tie", "Earring", "Necklace", "Watch", "Bracelet", "Helmet", "Spider", "Maize", "Slippers", "Boots",
-            "Hammer", "Saw", "Nail", "Drill", "Wrench", "Plier", "Screw", "Tape", "Ruler", "Brush",  
-            "Eraser", "Marker", "Compass", "Scalpel", "Tongs", "Ladder", "Flashlight", "Lock", "Key", "Bucket",
-            "Ball", "Balloon", "Toy", "Doll", "Whale", "Kite", "Clock", "Radio", "TV", "Candle",  
-            "Soap", "Towel", "Blanket", "Sniper", "Basket", "Suitcase", "Map", "Flag", "Rope", "Mirror",
-            "Ant", "Bee", "Butterfly", "Crab", "Crocodile", "Dove", "Electric fish", "Goose", "Hedgehog", "Jellyfish",  
-            "Kangaroo", "Leopard", "Mole", "Newt", "Octopus", "Panda", "Penguin", "Quail", "Raccoon", "Seagull",  
-            "Slug", "Squirrel", "Toad", "Vulture", "Jollof Rice", "Yak", "Chameleon", "Pigeon", "Donkey", "Gorilla",
-            "Envelope", "Air", "Breeze", "Calculator", "Razor", "Toothbrush", "Shampoo", "Lotion", "Comb", "Lipstick",  
-            "Cork", "Battery", "Sponge", "Sewing Needle", "Dice", "Whistle", "Thermometer", "Medal", "Goggles", "Locket",  
-            "Keychain", "Handbag", "Duster", "Chalk", "Sunscreen", "Flyswatter", "Bulb", "Headphones", "Joystick", "USB Drive",
-            "Volcano", "Glacier", "Coral", "Pebble", "Cactus", "Superman", "Vine", "Breeze", "Fog", "Wonderwoman",  
-            "Lava", "Seashell", "Spiderman", "Butter", "Driftwood", "Tide", "Dew", "Icicle", "Cliff", "Meadow",
-            "Mango", "Pawpaw", "Plum", "Coconut", "Avocado", "Blueberry", "Cucumber", "Lettuce", "Spinach", "Peanut",  
-            "Fan", "Charger", "Facebook Logo", "Yogurt", "Hoodie", "Donut", "Pasta", "Pancake", "Cereal", "Steak",  
-            "Cinema", "Popcorn", "Pickle", "Jam", "Sushi", "Noodles", "Sword", "Lasagna", "Meatball", "Hotdog",
-            "Mosque", "Synagogue", "Fort", "Greenhouse", "Warehouse", "Lighthouse", "Crocs", "Prison", "Opera House", "Mall",  
-            "Bus Stop", "Train Station", "Cinema", "Aquarium", "Museum", "Gas Station", "Campsite", "Parking Lot", "Windmill", "Playground",
-            "Rickshaw", "Barge", "Canoe", "Raft", "Hovercraft", "Cruise Ship", "Glider", "Cable Car", "Bulldozer", "Forklift",  
-            "Ambulance", "Trolley", "Dirt Bike", "Skateboard", "Roller Skates", "Ant hill", "Snowmobile", "Rowboat", "Toilet", "Tank",
-            "Raincoat", "Swimsuit", "Overalls", "Cape", "Water", "Beret", "Turban", "Hoodie", "Wristband", "Ankle Boots",  
-            "Choose a word", "Hairband", "Lionel Messi", "Christiano Ronaldo", "Turtleneck", "Water ripples", "Sandal", "Stockings", "Ice cubes", "Bathrobe",
-            "Chandelier", "Barometer", "Telescope", "Stethoscope", "Microscope", "Magnifying Glass", "Crowbar", "Screwdriver", "Chainsaw", "Mallet",  
-            "Chisel", "Tongs", "Pickaxe", "Gun", "Axe", "Clamp", "Wrench", "Drill Bit", "Paintbrush", "Measuring Tape",
-            "Ambulance", "Umbrella", "Keypad", "Compass", "Lantern", "Fireplace", "Silence", "Den", "Luggage", "Funnel",  
-            "Egg yolk", "Toaster", "Microwave", "Blender", "Vacuum Cleaner", "Sewing Machine", "Aquarium", "Boomerang", "Dumbbell", "TV Remote"
-    };
 
+
+        public string callRushTheme()
+    {
+        int randomIndex = Random.Range(0, Rush.Count);
+        return Rush[randomIndex];
+    }
     public string GetMostLikelyQuestion(int index)
     {
         if (index >= 0 && index < MostLikely.Count)
@@ -1299,6 +1310,7 @@ public class TT_QuestionManager : MonoBehaviour
         }
         return "No question available.";
     }
+
 
         public string GetSexyQuestion(int index)
     {
@@ -1346,12 +1358,10 @@ public class TT_QuestionManager : MonoBehaviour
         return NameThreeThings.Count;
     }
 
-        public int GetRushCount()
-    {
-        return Rush.Count;
-    }
-
-    
+    //     public int GetRushCount()
+    // {
+    //     return Rush.Count;
+    // } 
 
         public int GetSexyCount()
     {

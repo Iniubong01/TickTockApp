@@ -7,6 +7,7 @@ public class TT_GameOver : MonoBehaviour
     [SerializeField] private Text gameOverText;
     [SerializeField] private Text punishmentText;
     private bool hasGameOverLogicRun = false;
+    
 
     private TT_GamePlay gamePlay;
 
@@ -65,6 +66,14 @@ public class TT_GameOver : MonoBehaviour
         "Name game! The next person to say someone's name takes 2 penalties.",
     };
 
+            private List<string> RushPunishmentTexts = new List<string>()
+    {
+        "You've lost the round. Everyone in the team gets 2 penalties.",
+        "You've lost the round. Everyone in the team gets 3 penalties.",
+        "You're responsible for the fallout!",
+    };
+
+
             private List<string> noPunishmentTexts = new List<string>()
     {
         "There will be no punishment for this round!",
@@ -94,6 +103,11 @@ public class TT_GameOver : MonoBehaviour
         punishmentText.text = punishmentTexts[Random.Range(0, punishmentTexts.Count)];
     }
 
+        public void showRushPunishmentTexts()
+    {  
+        punishmentText.text = RushPunishmentTexts[Random.Range(0, RushPunishmentTexts.Count)];
+    }
+
     public void noPunishment()
     {  
         punishmentText.text = noPunishmentTexts[Random.Range(0, noPunishmentTexts.Count)];
@@ -117,7 +131,15 @@ public class TT_GameOver : MonoBehaviour
         {
             if (!hasGameOverLogicRun)
             {
-                showPunishmentTexts();
+                if(gamePlay.isRush)
+                {
+                    showRushPunishmentTexts();
+                }
+                else
+                {
+                    showPunishmentTexts();
+                }
+
                 showGameOverText();
                 hasGameOverLogicRun = true; // Run logic only once
             }
